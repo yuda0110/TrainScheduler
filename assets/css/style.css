@@ -1,7 +1,8 @@
 /* ========== VARIABLES ========== */
 :root {
     --color-blue: #07c;
-    --color-blue-light: #f5fcff;
+    --color-blue-light1: #f5fcff;
+    --color-blue-light2: #99e0ff;
     --color-blue-dark1: #07c;
     --color-blue-dark2: #049;
     --color-red: #e60011;
@@ -49,7 +50,118 @@ h3 {
     font-family: var(--font-heading);
 }
 
+h1 {
+    font-size: 3rem;
+    font-weight: 900;
+}
 
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+h3 {
+    padding: .5rem 1rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    background: var(--color-blue-dark2);
+    color: var(--color-white);
+}
+
+
+/* ========== HEADER ========== */
+header {
+    width: 100%;
+    padding: 1rem;
+    background: var(--color-blue);
+    color: var(--color-white);
+    text-align: center;
+}
+
+/* ========== MAIN CONTENTS ========== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    min-height: calc(100vh - 8rem);
+    height: auto;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--color-grey-light2);
+}
+
+section {
+    border-radius: .6rem;
+    overflow: hidden;
+    border: 1px solid var(--color-blue-dark2);
+    background: var(--color-white);
+}
+
+section:not(:last-child) {
+    margin-bottom: 3rem;
+}
+
+
+/* ========== TRAIN SCHEDULE ========== */
+#schedule table,
+#add-train form {
+    width: calc(100% - 4rem);
+    margin: 2rem;
+}
+
+#schedule table,
+#schedule th,
+#schedule td {
+    border-collapse: collapse;
+    border: 1px solid var(--color-grey-light1);
+    line-height: 1.5;
+    font-size: 1.4rem;
+}
+
+#schedule tr:nth-child(even){
+    background: var(--color-grey-light2);
+}
+
+#schedule th,
+#schedule td {
+    padding: 5px 10px;
+}
+
+#schedule th {
+    font-weight: 600;
+}
+
+
+/* ========== ADD TRAIN ========== */
+#add-train form {
+    font-size: 1.4rem;
+}
+
+#add-train .form-group:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+#add-train input {
+    width: 100%;
+    padding: .5rem 1rem;
+    display: block;
+    font-size: 1.4rem;
+}
+
+.btn-submit {
+    padding: 1rem 2rem;
+    color: var(--color-white);
+    font-weight: 600;
+    border: 0;
+    background-color: var(--color-blue-dark2);
+    border-radius: .6rem;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.btn-submit:hover,
+.btn-submit:focus {
+    background-color: var(--color-blue);
+}
 
 
 @media screen and (min-width: 641px) {
