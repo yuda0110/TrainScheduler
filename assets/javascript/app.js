@@ -25,14 +25,39 @@ $(document).ready(function () {
 
   };
 
+  function nextArrivalTime(minTillTrain) {
+    const nextTrain = moment().add(minTillTrain, 'minutes');
+    return moment(nextTrain).format("hh:mm");
+  }
+
+  function minAway(tFrequency, firstTime) {
+    const firstTimeConverted = moment(firstTime, 'HH:mm').subtract(1, 'years');
+    console.log('firstTimeConverted:' + firstTimeConverted);
+
+    const currentTime = moment();
+    console.log('current time: ' + moment(currentTime).format('hh:mm'));
+
+    const diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    const tRemainder = diffTime % tFrequency;
+    console.log('Time apart' + tRemainder);
+
+    console.log("MINUTES TILL TRAIN: " + (tFrequency - tRemainder));
+    return tFrequency - tRemainder;
+  }
+
   database.ref().on('child_added', function (snapshot) {
+    const minTillTrain = minAway(snapshot.val().frequency, snapshot.val().firstTrainTime);
+    const nextArrival = nextArrivalTime(minTillTrain);
+
     const tr = $('<tr>');
     tr.append(
       $('<td>').text(snapshot.val().trainName),
       $('<td>').text(snapshot.val().destination),
       $('<td>').text(snapshot.val().frequency),
-      $('<td>').text(snapshot.val().firstTrainTime),
-      $('<td>').text('')
+      $('<td>').text(nextArrival),
+      $('<td>').text(minTillTrain),
     );
     $('#schedule tbody').append(tr);
   });
