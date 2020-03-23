@@ -25,6 +25,18 @@ $(document).ready(function () {
 
   };
 
+  database.ref().on('child_added', function (snapshot) {
+    const tr = $('<tr>');
+    tr.append(
+      $('<td>').text(snapshot.val().trainName),
+      $('<td>').text(snapshot.val().destination),
+      $('<td>').text(snapshot.val().frequency),
+      $('<td>').text(snapshot.val().firstTrainTime),
+      $('<td>').text('')
+    );
+    $('#schedule tbody').append(tr);
+  });
+
 
   $('#add-train-btn').on('click', function (e) {
     e.preventDefault();
@@ -40,7 +52,6 @@ $(document).ready(function () {
     htmlEl.destination.val('');
     htmlEl.firstTrainTime.val('');
     htmlEl.frequency.val('');
-
   });
 });
 
