@@ -1,0 +1,66 @@
+/* ========== VARIABLES ========== */
+:root {
+    --color-blue: #07c;
+    --color-blue-light: #f5fcff;
+    --color-blue-dark1: #07c;
+    --color-blue-dark2: #049;
+    --color-red: #e60011;
+    --color-red-dark: #680404;
+    --color-white: #fff;
+    --color-black: #090909;
+    --color-grey: #333;
+    --color-grey-light1: #d9d9d9;
+    --color-grey-light2: #efefef;
+
+    --font-heading: 'Inter', sans-serif;
+    --font-default: 'Source Sans Pro', sans-serif;
+}
+
+/* ========== COMMON ========== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 50%; /* 8px/16px = 50% -> 1rem = 8px */
+}
+
+body {
+    font-family: var(--font-default);
+    min-height: 100vh;
+    line-height: 1.6;
+    color: var(--color-black);
+    position: relative;
+    font-size: 1.6rem;
+    font-weight: 400;
+    background-color: var(--color-grey-light2);
+}
+
+
+/* ========== HEADINGS ========== */
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+}
+
+
+
+
+@media screen and (min-width: 641px) {
+    /* width: 641px to 768px */
+    html {
+        font-size: 62.5%; /* 10px/16px = 62.5% -> 1rem = 10px */
+    }
+}
+
+
+@media screen and (min-width: 769px) {
+    /* width: 769px to  */
+
+}
