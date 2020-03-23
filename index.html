@@ -10,6 +10,51 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
+<header>
+    <h1>Anytime is Train Time</h1>
+    <h2>Choo Choo. Chee Chee.</h2>
+</header>
+<div class="container">
+    <section id="schedule">
+        <h3>Current Train Schedule</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>Frequency (min)</th>
+                    <th>Next Arrival</th>
+                    <th>Minutes Away</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </section>
+
+    <section id="add-train">
+        <h3>Add Train</h3>
+        <form>
+            <div class="form-group">
+                <label for="train-name">Train Name</label>
+                <input id="train-name" type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <input id="destination" type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="first-train-time">First Train Time (HH:mm - military time)</label>
+                <input id="first-train-time" type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency (min)</label>
+                <input id="frequency" type="number" required>
+            </div>
+        </form>
+    </section>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
