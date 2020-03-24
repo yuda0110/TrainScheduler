@@ -80,12 +80,16 @@ $(document).ready(function () {
     const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
 
     const tr = $('<tr>');
+    const updateBtn = $('<button class="btn-update">').text('Update');
+    const removeBtn = $('<button class="btn-remove">').text('Remove');
+
     tr.append(
       $('<td>').text(snapshotVal.trainName),
       $('<td>').text(snapshotVal.destination),
       $('<td>').text(snapshotVal.frequency),
       $(`<td id="next-arrival__${key}">`).text(nextArrival),
-      $(`<td id="min-away__${key}">`).text(minTillTrain)
+      $(`<td id="min-away__${key}">`).text(minTillTrain),
+      $('<td>').append(updateBtn, removeBtn)
     );
     $('#schedule tbody').append(tr);
   }, function(errorObject) {
@@ -101,5 +105,7 @@ $(document).ready(function () {
     trainSchedule.insertDataToDB();
     trainSchedule.emptyAllInputs();
   });
+
+
 });
 
