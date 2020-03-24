@@ -22,9 +22,11 @@ $(document).ready(function () {
   };
 
   const trainSchedule = {
+    dataList: [],
+
     nextArrivalTime: function (minTillTrain) {
       const nextTrain = moment().add(minTillTrain, 'minutes');
-      return moment(nextTrain).format("hh:mm");
+      return moment(nextTrain).format("HH:mm");
     },
 
     minAway: function (tFrequency, firstTime) {
@@ -67,7 +69,7 @@ $(document).ready(function () {
         $('<td>').text(snapshot.val().destination),
         $('<td>').text(snapshot.val().frequency),
         $('<td>').text(nextArrival),
-        $('<td>').text(minTillTrain),
+        $('<td>').text(minTillTrain)
       );
       $('#schedule tbody').append(tr);
     }
@@ -75,11 +77,45 @@ $(document).ready(function () {
 
 
   database.ref().on('child_added', function (snapshot) {
+    const key = snapshot.key;
+    console.log('key: ' + key);
+
+    const data = {};
+    data.id = key;
+    data.frequency = snapshot.val().frequency;
+    data.firstTime = snapshot.val().firstTrainTime;
+    trainSchedule.dataList.push(data);
+
+    console.log(trainSchedule.dataList);
+
     const minTillTrain = trainSchedule.minAway(snapshot.val().frequency, snapshot.val().firstTrainTime);
     const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
 
-    trainSchedule.updateTable(nextArrival, minTillTrain);
+    const tr = $('<tr>');
+    tr.append(
+      $('<td>').text(snapshot.val().trainName),
+      $('<td>').text(snapshot.val().destination),
+      $('<td>').text(snapshot.val().frequency),
+      $(`<td id="next-arrival__${key}">`).text(nextArrival),
+      $(`<td id="min-away__${key}">`).text(minTillTrain)
+    );
+    $('#schedule tbody').append(tr);
+  }, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
   });
+
+  setInterval(function () {
+    trainSchedule.dataList.forEach(function (item) {
+      const minTillTrain = trainSchedule.minAway(item.frequency, item.firstTime);
+      const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
+
+      $(`#next-arrival__${item.id}`).text(nextArrival);
+      $(`#min-away__${item.id}`).text(minTillTrain);
+
+      console.log('nextArrival: ' + nextArrival);
+      console.log('minTillTrain: ' + minTillTrain);
+    });
+  }, 60000);
 
 
   $('#add-train-btn').on('click', function (e) {
