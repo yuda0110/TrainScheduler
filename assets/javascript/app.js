@@ -52,6 +52,36 @@ $(document).ready(function () {
       });
     },
 
+    renderTable: function (snapshot) {
+      const key = snapshot.key;
+      const snapshotVal = snapshot.val();
+
+      const data = {};
+      data.id = key;
+      data.frequency = snapshotVal.frequency;
+      data.firstTime = snapshotVal.firstTrainTime;
+      trainSchedule.dataList.push(data);
+
+      const minTillTrain = trainSchedule.minAway(snapshotVal.frequency, snapshotVal.firstTrainTime);
+      const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
+
+      const tr = $(`<tr id="${key}">`);
+      const updateBtn = $('<button class="btn-update">').text('Update');
+      const removeBtn = $('<button class="btn-remove">').text('Remove');
+      updateBtn.attr('data-key', key);
+      removeBtn.attr('data-key', key);
+
+      tr.append(
+        $('<td>').text(snapshotVal.trainName),
+        $('<td>').text(snapshotVal.destination),
+        $('<td>').text(snapshotVal.frequency),
+        $(`<td id="next-arrival__${key}">`).text(nextArrival),
+        $(`<td id="min-away__${key}">`).text(minTillTrain),
+        $('<td>').append(updateBtn, removeBtn)
+      );
+      $('#schedule tbody').append(tr);
+    },
+
     updateTablePerMin: function () {
       setInterval(function () {
         trainSchedule.dataList.forEach(function (item) {
@@ -62,38 +92,26 @@ $(document).ready(function () {
           $(`#min-away__${item.id}`).text(minTillTrain);
         });
       }, 60000);
+    },
+
+    dbErrorLog: function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
     }
   };
 
 
   database.ref().on('child_added', function (snapshot) {
-    const key = snapshot.key;
-    const snapshotVal = snapshot.val();
-
-    const data = {};
-    data.id = key;
-    data.frequency = snapshotVal.frequency;
-    data.firstTime = snapshotVal.firstTrainTime;
-    trainSchedule.dataList.push(data);
-
-    const minTillTrain = trainSchedule.minAway(snapshotVal.frequency, snapshotVal.firstTrainTime);
-    const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
-
-    const tr = $('<tr>');
-    const updateBtn = $('<button class="btn-update">').text('Update');
-    const removeBtn = $('<button class="btn-remove">').text('Remove');
-
-    tr.append(
-      $('<td>').text(snapshotVal.trainName),
-      $('<td>').text(snapshotVal.destination),
-      $('<td>').text(snapshotVal.frequency),
-      $(`<td id="next-arrival__${key}">`).text(nextArrival),
-      $(`<td id="min-away__${key}">`).text(minTillTrain),
-      $('<td>').append(updateBtn, removeBtn)
-    );
-    $('#schedule tbody').append(tr);
+    trainSchedule.renderTable(snapshot);
   }, function(errorObject) {
-    console.log("The read failed: " + errorObject.code);
+    trainSchedule.dbErrorLog(errorObject);
+  });
+
+  database.ref().on('child_removed', function (snapshot) {
+    // Get the key of the removed data and remove its html element from the table
+    $(`#${snapshot.key}`).remove();
+
+  }, function(errorObject) {
+    trainSchedule.dbErrorLog(errorObject);
   });
 
   trainSchedule.updateTablePerMin();
@@ -106,6 +124,8 @@ $(document).ready(function () {
     trainSchedule.emptyAllInputs();
   });
 
-
+  $(document).on('click', '.btn-remove', function() {
+    database.ref().child($(this).attr('data-key')).remove();
+  });
 });
 
