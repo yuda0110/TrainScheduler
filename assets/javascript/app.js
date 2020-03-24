@@ -31,18 +31,8 @@ $(document).ready(function () {
 
     minAway: function (tFrequency, firstTime) {
       const firstTimeConverted = moment(firstTime, 'HH:mm').subtract(1, 'years');
-      console.log('firstTimeConverted:' + firstTimeConverted);
-
-      const currentTime = moment();
-      console.log('current time: ' + moment(currentTime).format('hh:mm'));
-
       const diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
-      console.log("DIFFERENCE IN TIME: " + diffTime);
-
       const tRemainder = diffTime % tFrequency;
-      console.log('Time apart' + tRemainder);
-
-      console.log("MINUTES TILL TRAIN: " + (tFrequency - tRemainder));
       return tFrequency - tRemainder;
     },
 
@@ -62,40 +52,38 @@ $(document).ready(function () {
       });
     },
 
-    updateTable: function (nextArrival, minTillTrain) {
-      const tr = $('<tr>');
-      tr.append(
-        $('<td>').text(snapshot.val().trainName),
-        $('<td>').text(snapshot.val().destination),
-        $('<td>').text(snapshot.val().frequency),
-        $('<td>').text(nextArrival),
-        $('<td>').text(minTillTrain)
-      );
-      $('#schedule tbody').append(tr);
+    updateTablePerMin: function () {
+      setInterval(function () {
+        trainSchedule.dataList.forEach(function (item) {
+          const minTillTrain = trainSchedule.minAway(item.frequency, item.firstTime);
+          const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
+
+          $(`#next-arrival__${item.id}`).text(nextArrival);
+          $(`#min-away__${item.id}`).text(minTillTrain);
+        });
+      }, 60000);
     }
   };
 
 
   database.ref().on('child_added', function (snapshot) {
     const key = snapshot.key;
-    console.log('key: ' + key);
+    const snapshotVal = snapshot.val();
 
     const data = {};
     data.id = key;
-    data.frequency = snapshot.val().frequency;
-    data.firstTime = snapshot.val().firstTrainTime;
+    data.frequency = snapshotVal.frequency;
+    data.firstTime = snapshotVal.firstTrainTime;
     trainSchedule.dataList.push(data);
 
-    console.log(trainSchedule.dataList);
-
-    const minTillTrain = trainSchedule.minAway(snapshot.val().frequency, snapshot.val().firstTrainTime);
+    const minTillTrain = trainSchedule.minAway(snapshotVal.frequency, snapshotVal.firstTrainTime);
     const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
 
     const tr = $('<tr>');
     tr.append(
-      $('<td>').text(snapshot.val().trainName),
-      $('<td>').text(snapshot.val().destination),
-      $('<td>').text(snapshot.val().frequency),
+      $('<td>').text(snapshotVal.trainName),
+      $('<td>').text(snapshotVal.destination),
+      $('<td>').text(snapshotVal.frequency),
       $(`<td id="next-arrival__${key}">`).text(nextArrival),
       $(`<td id="min-away__${key}">`).text(minTillTrain)
     );
@@ -104,25 +92,13 @@ $(document).ready(function () {
     console.log("The read failed: " + errorObject.code);
   });
 
-  setInterval(function () {
-    trainSchedule.dataList.forEach(function (item) {
-      const minTillTrain = trainSchedule.minAway(item.frequency, item.firstTime);
-      const nextArrival = trainSchedule.nextArrivalTime(minTillTrain);
-
-      $(`#next-arrival__${item.id}`).text(nextArrival);
-      $(`#min-away__${item.id}`).text(minTillTrain);
-
-      console.log('nextArrival: ' + nextArrival);
-      console.log('minTillTrain: ' + minTillTrain);
-    });
-  }, 60000);
+  trainSchedule.updateTablePerMin();
 
 
   $('#add-train-btn').on('click', function (e) {
     e.preventDefault();
 
     trainSchedule.insertDataToDB();
-
     trainSchedule.emptyAllInputs();
   });
 });
