@@ -127,5 +127,36 @@ $(document).ready(function () {
   $(document).on('click', '.btn-remove', function() {
     database.ref().child($(this).attr('data-key')).remove();
   });
+
+  $(document).on('click', '.btn-update', function() {
+    // Render a form to update Train Name, Destination, and Frequency
+    console.log('update!!');
+    const darkBg = $('<div class="dark-bg">');
+
+    const editTrainEl = $('<section id="edit-train">');
+    const h3El = $('<h3>').text('Edit Train Schedule');
+    const formEl = $('<form>');
+    const formGroupEl1 = $('<div class="form-group">');
+    const trainNameLabel = $('<label for="train-name">').text('Train Name');
+    const trainNameInput = $('<input id="train-name" type="text" required>');
+    $(formGroupEl1).append(trainNameLabel, trainNameInput);
+    const formGroupEl2 = $('<div class="form-group">');
+    const destinationLabel = $('<label for="destination">').text('Destination');
+    const destinationInput = $('<input id="destination" type="text" required>');
+    $(formGroupEl2).append(destinationLabel, destinationInput);
+    const formGroupEl3 = $('<div class="form-group">');
+    const frequencyLabel = $('<label for="frequency">').text('Frequency');
+    const frequencyInput = $('<input id="frequency" type="text" required>');
+    $(formGroupEl3).append(frequencyLabel, frequencyInput);
+    const updateBtn = $('<button id="update-train-btn" class="btn-form btn-submit">').text('Update');
+    const cancelBtn = $('<button id="cancel-btn" class="btn-form btn-cancel">').text('Cancel');
+    $(formEl).append(formGroupEl1, formGroupEl2, formGroupEl3, updateBtn, cancelBtn);
+    $(editTrainEl).append(h3El, formEl);
+    $('body').append(darkBg, editTrainEl);
+  });
+
 });
+
+
+
 

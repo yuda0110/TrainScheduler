@@ -12,6 +12,7 @@
     --color-grey: #333;
     --color-grey-light1: #d9d9d9;
     --color-grey-light2: #efefef;
+    --color-grey-dark: #1e1e1e;
 
     --font-heading: 'Inter', sans-serif;
     --font-default: 'Source Sans Pro', sans-serif;
@@ -102,8 +103,7 @@ section:not(:last-child) {
 
 
 /* ========== TRAIN SCHEDULE ========== */
-#schedule table,
-#add-train form {
+#schedule table {
     width: calc(100% - 4rem);
     margin: 2rem;
 }
@@ -131,23 +131,38 @@ section:not(:last-child) {
 }
 
 
-/* ========== ADD TRAIN ========== */
-#add-train form {
+/* ========== ADD / EDIT TRAIN ========== */
+#edit-train {
+    width: 90%;
+    max-width: 60rem;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#add-train form,
+#edit-train form {
+    width: calc(100% - 4rem);
+    margin: 2rem;
     font-size: 1.4rem;
 }
 
-#add-train .form-group:not(:last-child) {
+#add-train .form-group:not(:last-child),
+#edit-train .form-group:not(:last-child) {
     margin-bottom: 1.5rem;
 }
 
-#add-train input {
+#add-train input,
+#edit-train input {
     width: 100%;
     padding: .5rem 1rem;
     display: block;
     font-size: 1.4rem;
 }
 
-.btn-submit {
+.btn-form {
     padding: 1rem 2rem;
     color: var(--color-white);
     font-weight: 600;
@@ -158,11 +173,38 @@ section:not(:last-child) {
     transition: all .3s;
 }
 
+.btn-form:not(:last-child) {
+    margin-right: 2rem;
+}
+
+.btn-submit {
+    color: var(--color-white);
+    background-color: var(--color-blue-dark2);
+}
+
 .btn-submit:hover,
 .btn-submit:focus {
     background-color: var(--color-blue);
 }
 
+.btn-cancel {
+    color: var(--color-white);
+    background-color: var(--color-grey);
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus {
+    background-color: var(--color-grey-dark);
+}
+
+.dark-bg {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .7);
+}
 
 @media screen and (min-width: 641px) {
     /* width: 641px to 768px */
