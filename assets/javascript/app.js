@@ -96,6 +96,11 @@ $(document).ready(function () {
 
     dbErrorLog: function (errorObject) {
       console.log("The read failed: " + errorObject.code);
+    },
+
+    removeEditForm: function () {
+      $('#edit-train').remove();
+      $('.dark-bg').remove();
     }
   };
 
@@ -130,7 +135,6 @@ $(document).ready(function () {
 
   $(document).on('click', '.btn-update', function() {
     // Render a form to update Train Name, Destination, and Frequency
-    console.log('update!!');
     const darkBg = $('<div class="dark-bg">');
 
     const editTrainEl = $('<section id="edit-train">');
@@ -153,6 +157,14 @@ $(document).ready(function () {
     $(formEl).append(formGroupEl1, formGroupEl2, formGroupEl3, updateBtn, cancelBtn);
     $(editTrainEl).append(h3El, formEl);
     $('body').append(darkBg, editTrainEl);
+  });
+
+  $(document).on('click', '.dark-bg', function () {
+    trainSchedule.removeEditForm();
+  });
+
+  $(document).on('click', '#cancel-btn', function () {
+    trainSchedule.removeEditForm();
   });
 
 });
