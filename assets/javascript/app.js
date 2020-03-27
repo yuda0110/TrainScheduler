@@ -114,6 +114,7 @@ $(document).ready(function () {
       const removeBtn = $('<button class="btn-remove">').text('Remove');
       updateBtn.attr('data-key', key);
       removeBtn.attr('data-key', key);
+      const tbody = $('#schedule tbody');
 
       tr.append(
         $('<td class="td__train-name">').text(snapshotVal.trainName),
@@ -123,7 +124,13 @@ $(document).ready(function () {
         $(`<td id="min-away__${key}">`).text(minTillTrain),
         $('<td>').append(updateBtn, removeBtn)
       );
-      $('#schedule tbody').append(tr);
+
+      const renderedTr = $(`#${key}`);
+      if (renderedTr) {
+        renderedTr.remove();
+      }
+
+      tbody.append(tr);
     },
 
     updateTablePerMin: function () {
@@ -184,10 +191,16 @@ $(document).ready(function () {
     trainSchedule.dbErrorLog(errorObject);
   });
 
+  database.ref().on('child_changed', function (snapshot) {
+    console.log('child_changed');
+    trainSchedule.renderTable(snapshot);
+  }, function(errorObject) {
+    trainSchedule.dbErrorLog(errorObject);
+  });
+
   database.ref().on('child_removed', function (snapshot) {
     // Get the key of the removed data and remove its html element from the table
     $(`#${snapshot.key}`).remove();
-
   }, function(errorObject) {
     trainSchedule.dbErrorLog(errorObject);
   });
