@@ -9,9 +9,11 @@
     --color-red-dark: #680404;
     --color-white: #fff;
     --color-black: #090909;
-    --color-grey: #333;
+    --color-grey: #505050;
     --color-grey-light1: #d9d9d9;
     --color-grey-light2: #efefef;
+    --color-grey-light3: #7a7a7a;
+    --color-grey-dark: #373737;
 
     --font-heading: 'Inter', sans-serif;
     --font-default: 'Source Sans Pro', sans-serif;
@@ -91,7 +93,7 @@ header {
 
 section {
     border-radius: .6rem;
-    overflow: hidden;
+    /*overflow: hidden;*/
     border: 1px solid var(--color-blue-dark2);
     background: var(--color-white);
 }
@@ -102,10 +104,13 @@ section:not(:last-child) {
 
 
 /* ========== TRAIN SCHEDULE ========== */
-#schedule table,
-#add-train form {
-    width: calc(100% - 4rem);
-    margin: 2rem;
+.schedule__container {
+    overflow-x: scroll;
+    padding: 2rem;
+}
+
+#schedule table {
+    width: 100%;
 }
 
 #schedule table,
@@ -121,33 +126,85 @@ section:not(:last-child) {
     background: var(--color-grey-light2);
 }
 
+#schedule th {
+    background: var(--color-grey-light3);
+    color: var(--color-white);
+}
+
 #schedule th,
 #schedule td {
     padding: 5px 10px;
+    vertical-align: middle;
 }
 
 #schedule th {
     font-weight: 600;
 }
 
+#schedule .btn-update,
+#schedule .btn-remove {
+    padding: .5rem 1rem;
+    color: var(--color-white);
+    border: 0;
+    border-radius: .3rem;
+    cursor: pointer;
+    transition: all .3s;
+}
 
-/* ========== ADD TRAIN ========== */
-#add-train form {
+#schedule .btn-update {
+    margin-bottom: .5rem;
+    display: block;
+    color: var(--color-white);
+    background-color: var(--color-blue);
+}
+
+#schedule .btn-update:hover,
+#schedule .btn-update:focus {
+    background-color: var(--color-blue-dark2);
+}
+
+#schedule .btn-remove {
+    color: var(--color-white);
+    background-color: var(--color-grey);
+}
+
+#schedule .btn-remove:hover,
+#schedule .btn-remove:focus {
+    background-color: var(--color-grey-dark);
+}
+
+/* ========== ADD / EDIT TRAIN ========== */
+#edit-train {
+    width: 90%;
+    max-width: 60rem;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#add-train form,
+#edit-train form {
+    width: calc(100% - 4rem);
+    margin: 2rem;
     font-size: 1.4rem;
 }
 
-#add-train .form-group:not(:last-child) {
+#add-train .form-group:not(:last-child),
+#edit-train .form-group:not(:last-child) {
     margin-bottom: 1.5rem;
 }
 
-#add-train input {
+#add-train input,
+#edit-train input {
     width: 100%;
     padding: .5rem 1rem;
     display: block;
     font-size: 1.4rem;
 }
 
-.btn-submit {
+.btn-form {
     padding: 1rem 2rem;
     color: var(--color-white);
     font-weight: 600;
@@ -158,11 +215,38 @@ section:not(:last-child) {
     transition: all .3s;
 }
 
-.btn-submit:hover,
-.btn-submit:focus {
+.btn-form:not(:last-child) {
+    margin-right: 2rem;
+}
+
+.btn-submit {
+    color: var(--color-white);
     background-color: var(--color-blue);
 }
 
+.btn-submit:hover,
+.btn-submit:focus {
+    background-color: var(--color-blue-dark2);
+}
+
+.btn-cancel {
+    color: var(--color-white);
+    background-color: var(--color-grey);
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus {
+    background-color: var(--color-grey-dark);
+}
+
+.dark-bg {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .7);
+}
 
 @media screen and (min-width: 641px) {
     /* width: 641px to 768px */
@@ -172,7 +256,11 @@ section:not(:last-child) {
 }
 
 
-@media screen and (min-width: 769px) {
-    /* width: 769px to  */
+@media screen and (min-width: 850px) {
+    /* width: 850px to  */
+    #schedule .btn-update {
+        margin-right: .5rem;
+        display: inline-block;
+    }
 
 }

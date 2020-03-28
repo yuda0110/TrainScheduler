@@ -17,20 +17,23 @@
 <div class="container">
     <section id="schedule">
         <h3>Current Train Schedule</h3>
-        <table>
-            <thead>
+        <div class="schedule__container">
+            <table>
+                <thead>
                 <tr>
                     <th>Train Name</th>
                     <th>Destination</th>
                     <th>Frequency (min)</th>
                     <th>Next Arrival</th>
                     <th>Minutes Away</th>
+                    <th></th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <section id="add-train">
@@ -52,7 +55,7 @@
                 <label for="frequency">Frequency (min)</label>
                 <input id="frequency" type="number" min="1" required>
             </div>
-            <button id="add-train-btn" class="btn-submit" type="submit">
+            <button id="add-train-btn" class="btn-form btn-submit" type="submit">
                 Submit
             </button>
         </form>
