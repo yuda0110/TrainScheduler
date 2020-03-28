@@ -65,16 +65,11 @@ $(document).ready(function () {
         data['frequency'] = frequency;
         data['firstTrainTime'] = firstTrainTime;
 
-        console.log('getCurrentData======');
-        console.log(data);
-
         return data;
       });
     },
 
     updateData: function (key) {
-      console.log('key!!!!!: ' + key);
-
       let firstTime = '00:00';
 
       this.dataList.forEach(function (data) {
@@ -192,7 +187,6 @@ $(document).ready(function () {
   });
 
   database.ref().on('child_changed', function (snapshot) {
-    console.log('child_changed');
     trainSchedule.renderTable(snapshot);
   }, function(errorObject) {
     trainSchedule.dbErrorLog(errorObject);
@@ -228,10 +222,7 @@ $(document).ready(function () {
 
   $(document).on('click', '.btn-update', function() {
     // Render a form to update Train Name, Destination, and Frequency
-
     const key = $(this).attr('data-key');
-    console.log('btn-update key:' + key);
-
     trainSchedule.renderEditForm(key);
   });
 
